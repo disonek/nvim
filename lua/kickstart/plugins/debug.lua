@@ -23,6 +23,12 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    -- 'hrsh7th/nvim-cmp', -- Required
+    -- 'hrsh7th/cmp-nvim-lsp', -- Required
+    -- 'hrsh7th/cmp-buffer', -- Optional
+    -- 'hrsh7th/cmp-path', -- Optional
+    -- 'saadparwaiz1/cmp_luasnip', -- Optional
+    -- 'hrsh7th/cmp-nvim-lua', -- Optional
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -48,6 +54,25 @@ return {
   end,
   config = function()
     local dap = require 'dap'
+
+    -- Added by me
+    dap.adapters.codelldb = {
+      type = 'server',
+      host = '127.0.0.1',
+      port = 13000, -- 💀 Use the port printed out or specified with `--port`
+    }
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        -- CHANGE THIS to your path!
+        command = '/absolute/path/to/codelldb/extension/adapter/codelldb',
+        args = { '--port', '${port}' },
+
+        -- On windows you may have to uncomment this:
+        -- detached = false,
+      },
+    }
     local dapui = require 'dapui'
 
     require('mason-nvim-dap').setup {
